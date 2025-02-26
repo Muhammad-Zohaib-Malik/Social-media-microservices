@@ -15,7 +15,7 @@ export const registerUser=async(req,res)=>{
     }
     
     const{username,email,password}=req.body
-    let user=await User.fineOne({$or:[{email},{username}]})
+    let user=await User.findOne({$or:[{email},{username}]})
     if(user)
     {
       logger.warn('User already exists ')
@@ -30,7 +30,7 @@ export const registerUser=async(req,res)=>{
 
     await user.save()
     logger.warn('user created successfully',user._id)
-    const {accessToken,refreshToken}=await generateToken()
+    const {accessToken,refreshToken}=await generateToken(user)
     return res.status(201).json({success:true,message:"User registered successfully",accessToken,refreshToken})
     
   } catch (error) {
