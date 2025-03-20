@@ -1,8 +1,9 @@
-import express from 'express'
-import { registerUser } from '../controllers/identity.controller.js'
+import express from "express";
+import { loginUser, registerUser } from "../controllers/identity.controller.js";
 
-const identityRouter=express.Router()
+const identityRouter = express.Router();
 
-identityRouter.post('/register',registerUser)
+identityRouter.post("/register", registerUser);
+identityRouter.post("/login", loginUser);
 
-export default identityRouter
+export default identityRouter;

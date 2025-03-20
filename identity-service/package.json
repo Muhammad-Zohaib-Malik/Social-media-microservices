@@ -21,6 +21,7 @@
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.1",
+    "prettier": "^3.5.3",
     "rate-limit-redis": "^4.2.0",
     "rate-limiter-flexible": "^5.0.5",
     "winston": "^3.17.0"
