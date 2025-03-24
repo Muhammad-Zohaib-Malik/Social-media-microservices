@@ -30,13 +30,10 @@ export const registerUser = async (req, res) => {
     });
 
     await user.save();
-    logger.warn("user created successfully", user._id);
-    const { accessToken, refreshToken } = await generateToken(user);
+    logger.info("user created successfully", user);
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
-      accessToken,
-      refreshToken,
     });
   } catch (error) {
     logger.error("Registeration error occur", error);
@@ -72,15 +69,48 @@ export const loginUser = async (req, res) => {
         .json({ success: false, message: "Invalid credentials" });
     }
 
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+
     const { accessToken, refreshToken } = await generateToken(user);
-    return res.status(201).json({
-      success: true,
-      message: "User login successfully",
-      accessToken,
-      refreshToken,
-    });
+
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
+      .json({
+        success: true,
+        message: "User login successfully",
+        accessToken,
+        refreshToken,
+        user,
+      });
   } catch (error) {
     logger.error("Login error occur", error);
     res.status(500).json({ success: false, message: "Internal error" });
   }
+};
+
+export const logoutUser = async (req, res) => {
+  logger.info("Logout hit point end");
+  const userId = req.user._id;
+
+   await User.findByIdAndUpdate(
+    userId,
+    { $set: { refreshToken: undefined } },
+    { new: true }
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json({ success: true, message: "user logged out successfully" });
 };
