@@ -9,6 +9,8 @@ import Redis from "ioredis";
 import { rateLimit } from "express-rate-limit";
 import { RedisStore } from "rate-limit-redis";
 import identityRouter from "./routes/identity.route.js";
+import cookieParser from 'cookie-parser'
+
 
 const app = express();
 
@@ -22,6 +24,7 @@ const redisClient = new Redis(process.env.REDIS_URL);
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser())
 // app.use(limiter)
 
 app.use((req, res, next) => {
