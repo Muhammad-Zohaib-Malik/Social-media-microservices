@@ -1,4 +1,4 @@
-import logger from "../../../api-gateway/src/utils/logger.js";
+import logger from "../utils/logger.js";
 
 export const authenticateRequest = (req, res, next) => {
     const userId = req.headers["x-user-id"];
