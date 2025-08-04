@@ -3,7 +3,7 @@ import { RedisStore } from "rate-limit-redis";
 import logger from "../utils/logger.js";
 import redisClient from "../config/redis.js";
 
-export const sensitiveEndpoinstLimiter = rateLimit({
+export const sensitiveEndpointsLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 100,
   standardHeaders: true,
