@@ -80,7 +80,6 @@ export const loginUser = async (req, res) => {
       success: true,
       message: "User login successfully",
       accessToken,
-      user,
     });
   } catch (error) {
     logger.error("Login error occur", error);
