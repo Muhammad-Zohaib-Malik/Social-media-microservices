@@ -1,26 +1,26 @@
-import mongoose from 'mongoose';
-const postSchema = new mongoose.Schema({
+import mongoose from "mongoose";
+const postSchema = new mongoose.Schema(
+  {
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     content: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     mediaUrls: {
-        type: [String],
-        default: []
+      type: [String],
+      default: [],
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+  },
+  {
+    timestamps: true,
+  }
+);
 
-postSchema.index({ content: 'text' }); 
+postSchema.index({ content: "text" });
 
-export const Post = mongoose.model('Post', postSchema);
-
+export const Post = mongoose.model("Post", postSchema);
