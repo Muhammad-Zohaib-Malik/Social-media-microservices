@@ -4,8 +4,9 @@ import { User } from "../models/identity.model.js";
 export const isAuth = async (req, res, next) => {
   try {
     const token =
-      req.cookies?.accessToken ||
-      req.header("Authorization")?.replace("Bearer ", "");
+      req.cookies?.accessToken
+      //  ||
+      // req.header("Authorization")?.replace("Bearer ", "");
     if (!token) {
       return res
         .status(404)
