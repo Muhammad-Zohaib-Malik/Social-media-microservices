@@ -74,19 +74,14 @@ export const loginUser = async (req, res) => {
       secure: true,
     };
 
-    const { accessToken, refreshToken } = await generateToken(user);
+    const { accessToken } = await generateToken(user);
 
-    return res
-      .status(200)
-      .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", refreshToken, options)
-      .json({
-        success: true,
-        message: "User login successfully",
-        accessToken,
-        refreshToken,
-        user,
-      });
+    return res.status(200).cookie("accessToken", accessToken, options).json({
+      success: true,
+      message: "User login successfully",
+      accessToken,
+      user,
+    });
   } catch (error) {
     logger.error("Login error occur", error);
     res.status(500).json({ success: false, message: "Internal error" });
@@ -97,11 +92,11 @@ export const logoutUser = async (req, res) => {
   logger.info("Logout hit point end");
   const userId = req.user._id;
 
-   await User.findByIdAndUpdate(
-    userId,
-    { $set: { refreshToken: undefined } },
-    { new: true }
-  );
+  const user = await User.findById(userId);
+  if (!user) {
+    logger.warn("User not exists ");
+    return res.status(404).json({ success: false, message: "User not exists" });
+  }
 
   const options = {
     httpOnly: true,
@@ -111,6 +106,5 @@ export const logoutUser = async (req, res) => {
   return res
     .status(200)
     .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
     .json({ success: true, message: "user logged out successfully" });
 };
